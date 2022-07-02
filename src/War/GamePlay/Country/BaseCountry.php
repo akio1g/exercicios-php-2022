@@ -14,37 +14,17 @@ class BaseCountry implements CountryInterface
      */
     protected $name;
 
-    /**
-     *
-     * The neighbors of a country.
-     *
-     * @var array
-     */
-    protected $neighbors;
+    protected array $neighbors = [];
 
-    /**
-     *
-     * The number of troops in this country.
-     *
-     * @var int
-     */
-    protected $numberOfTroops;
+    protected int $numberOfTroops = 3;
 
-    /**
-     * Builder.
-     *
-     * @param string $name
-     *            The name of the country.
-     * @param array $neighbors
-     *            The neighbors of a country.
-     * @param int $numberOfTroops
-     *            The nuber of troops in this country.
-     */
-    public function __construct(string $name, array $neighbors, int $numberOfTroops)
+    protected array $conqueredCountries = [];
+
+    protected CountryInterface $conquered;
+
+    public function __construct(string $name)
     {
         $this->name = $name;
-        $this->neighbors = $neighbors;
-        $this->numberOfTroops = $numberOfTroops;
     }
 
     public function getName(): string
@@ -67,6 +47,26 @@ class BaseCountry implements CountryInterface
         $this->neighbors = $neighbors;
     }
 
+    public function getConqueredCountries(): array
+    {
+        return $this->conqueredCountries;
+    }
+
+    public function setConqueredCountries(CountryInterface $country): void
+    {
+        array_push($this->conqueredCountries, $country);
+    }
+
+    public function getConquered(): CountryInterface
+    {
+        return $this->conquered;
+    }
+
+    public function setConquered($conquered)
+    {
+        $this->conquered = $conquered;
+    }
+
     public function killTroops(int $killedTroops): void
     {
         $this->numberOfTroops -= $killedTroops;
@@ -74,18 +74,14 @@ class BaseCountry implements CountryInterface
 
     public function conquer(CountryInterface $conqueredCountry): void
     {
-        $neighbors = getNeighbors();
         $neighborsConquered = $conqueredCountry . getNeighbors();
-        $newNeighbors = array_merge($neighbors, $neighborsConquered); # junta as duas listas
-        
+        $newNeighbors = array_merge($this->neighbors, $neighborsConquered); # junta as duas listas
+
         $newNeighbors = array_unique($newNeighbors); # remove duplicadas
-        
-        for($i = 0; $i < count($newNeighbors); ++$i){ # remove o pais conquistado da lista
-            if($newNeighbors[$i] == $conqueredCountry.getName()){
-                unset($neighbors[$i]);
-                break;
-            }
-        }
+
+        $this->neighbors = $newNeighbors;
+        setConqueredCountries($conqueredCountry);
+        $conqueredCountry.setConquered($this);
     }
 
     public function isConquered(): bool
