@@ -83,5 +83,13 @@ interface CountryInterface {
    *   The number of troops killed in battle.
    */
   public function killTroops(int $killedTroops): void;
-
+  
+  
+  /**
+   * 
+   * @param \Galoa\ExerciciosPhp2022\War\GamePlay\Country\CountryInterface $conqueredCountry 
+   * The country that conquer the country
+   */
+  public function setConquered(CountryInterface $conqueredCountry): void;
+  public function getConquered(): CountryInterface;
 }

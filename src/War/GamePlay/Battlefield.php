@@ -31,11 +31,11 @@ class Battlefield implements BattlefieldInterface
     {
         $arrayWithDiceValues = [];
         if ($isAtacking) {
-            for ($i = 1; $i < $country . getNumberOfTroops(); $i ++) {
+            for ($i = 1; $i < $country->getNumberOfTroops(); $i ++) {
                 array_push($arrayWithDiceValues, rand(1, 6));
             }
         } else {
-            for ($i = 1; $i <= $country . getNumberOfTroops(); $i ++) {
+            for ($i = 1; $i <= $country->getNumberOfTroops(); $i ++) {
                 array_push($arrayWithDiceValues, rand(1, 6));
             }
         }
@@ -43,34 +43,26 @@ class Battlefield implements BattlefieldInterface
         return $arrayWithDiceValues;
     }
 
-    /**
-     * Computes the winners and losers of a battle.
-     *
-     * @param \Galoa\ExerciciosPhp2022\War\GamePlay\Country\CountryInterface $attackingCountry
-     *            The country that is attacking.
-     * @param int[] $attackingDice
-     *            The number
-     * @param \Galoa\ExerciciosPhp2022\War\GamePlay\Country\CountryInterface $defendingCountry
-     *            The country that is defending from the attack.
-     */
+
     public function computeBattle(CountryInterface $attackingCountry, array $attackingDice, CountryInterface $defendingCountry, array $defendingDice): void
     {
         $AttackCounter = 0;
         $DefenderCounter = 0;
-        $x = minValue($attackingDice.count(), $defendingDice.count());
-        
-        for ($i = 0; $i < $x; $i++){
+        $x = $this->minValue(sizeof($attackingDice), sizeof($defendingDice));
+
+        for ($i = 0; $i < $x; $i ++) {
             if ($defendingDice[$i] >= $attackingDice[$i]) {
                 $DefenderCounter += 1;
             } else {
                 $AttackCounter += 1;
             }
         }
-        $attackingCountry.killTroops($DefenderCounter);
-        $defendingCountry.killTroops($AttackCounter);
+        $attackingCountry->killTroops($DefenderCounter);
+        $defendingCountry->killTroops($AttackCounter);
     }
-        
-    private function minValue(int $at, int $df): int {
+
+    private function minValue(int $at, int $df): int
+    {
         if ($at > $df) {
             return $df;
         } else {

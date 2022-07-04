@@ -6,7 +6,7 @@ namespace Galoa\ExerciciosPhp2022\War\GamePlay\Country;
  */
 class BaseCountry implements CountryInterface
 {
-
+    public static array $allConqueredCountries = [];
     /**
      * The name of the country.
      *
@@ -20,7 +20,7 @@ class BaseCountry implements CountryInterface
 
     protected array $conqueredCountries = [];
 
-    protected CountryInterface $conquered;
+    public CountryInterface $conquered;
 
     public function __construct(string $name)
     {
@@ -35,6 +35,10 @@ class BaseCountry implements CountryInterface
     public function getNumberOfTroops(): int
     {
         return $this->numberOfTroops;
+    }
+    
+    public function setNumberofTroops(int $troops): void {
+        $this->numberOfTroops += $troops;
     }
 
     public function getNeighbors(): array
@@ -62,7 +66,7 @@ class BaseCountry implements CountryInterface
         return $this->conquered;
     }
 
-    public function setConquered($conquered)
+    public function setConquered($conquered): void
     {
         $this->conquered = $conquered;
     }
@@ -74,19 +78,28 @@ class BaseCountry implements CountryInterface
 
     public function conquer(CountryInterface $conqueredCountry): void
     {
-        $neighborsConquered = $conqueredCountry . getNeighbors();
+        $neighborsConquered = $conqueredCountry->getNeighbors();
         $newNeighbors = array_merge($this->neighbors, $neighborsConquered); # junta as duas listas
 
-        $newNeighbors = array_unique($newNeighbors); # remove duplicadas
-
+        $newNeighbors = array_unique($newNeighbors,SORT_REGULAR); # remove duplicadas
+        
+        for($i=0; $i < sizeof($newNeighbors); $i++){
+            if ($newNeighbors[$i] == $this){
+                unset($newNeighbors[$i]);
+                break;
+            }
+        }
+        
+        
         $this->neighbors = $newNeighbors;
-        setConqueredCountries($conqueredCountry);
-        $conqueredCountry.setConquered($this);
+        $this->setConqueredCountries($conqueredCountry);
+        $conqueredCountry->setConquered($this);
+        array_push(BaseCountry::$allConqueredCountries,$conqueredCountry); 
     }
 
     public function isConquered(): bool
     {
-        if ($this->numberOfTroops <= 0) {
+        if ($this->numberOfTroops < 1) {
             return true;
         }
         return false;
