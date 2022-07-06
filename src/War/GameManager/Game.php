@@ -48,11 +48,18 @@ class Game
         $this->countries = $countries;
     }
 
+    public function startConfig(): void{
+        foreach($this->countries as $x) {
+            $x->isConquered();
+        }
+    }
+    
     /**
      * Plays the game.
      */
     public function play(): void
     {
+        $this->startConfig();
         $i = 0;
         while (! $this->gameOver()) {
             $i ++;
@@ -130,6 +137,7 @@ class Game
 
                 if ($defendingCountry->isConquered()) {
                     $attackingCountry->conquer($defendingCountry);
+                    $defendingCountry->setConquered($attackingCountry);
                     print "  " . $defendingCountry->getName() . " foi anexado por " . $attackingCountry->getName() . "!\n";
                 } else {
                     print "  " . $defendingCountry->getName() . " conseguiu se defender!\n";

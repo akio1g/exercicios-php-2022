@@ -19,27 +19,17 @@ class ComputerPlayerCountry extends BaseCountry
      */
     public function chooseToAttack(): ?CountryInterface
     {
-
         $attackOrNot = rand(0, 1);
-        if ($attackOrNot == 1) {
-            $numberChose = rand(0, count($this->neighbors) - 1);
-            if (empty(BaseCountry::$allConqueredCountries)) {
-                return $this->neighbors[$numberChose];
+        
+        $neighborChose = new BaseCountry();
+        
+        if ($attackOrNot == 1) { # ESCOLHE SE VAI ATACAR OU NAO
+            $numberChose = rand(0, sizeof($this->neighbors) - 1); # escolhe o index pra escolher um inimigo
+            $neighborChose = $this->neighbors[$numberChose];
+            if ($neighborChose->isConquered()) { # # CALL TO A MEMEBER FUNCTION ON NULL
+                return $neighborChose->getConquered();
             } else {
-                $i = 0;
-                do {
-                    if ($this->neighbors[$numberChose] == BaseCountry::$allConqueredCountries[$i] && (count($this->neighbors) == 1)) {
-                        return $this->neighbors[$numberChose]->getConquered();// PRECISA IMPLEMENTAR UM JEITO DE ESCOLHER O CARA Q FOI DOMINADO
-                    } elseif ($this->neighbors[$numberChose] == BaseCountry::$allConqueredCountries[$i]) {
-                        $numberChose = rand(0, count($this->neighbors) - 1);
-                        $i = 0;
-                    } elseif ($this->neighbors[$numberChose] != BaseCountry::$allConqueredCountries[$i]) {
-                        $i += 1;
-                    } else {
-                        return null;
-                    }
-                } while ($i == (sizeof(BaseCountry::$allConqueredCountries) - 1));
-                return $this->neighbors[$numberChose];
+                return $neighborChose;
             }
         } else {
             return null;
