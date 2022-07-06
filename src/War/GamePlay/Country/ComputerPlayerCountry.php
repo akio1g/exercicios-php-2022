@@ -21,7 +21,6 @@ class ComputerPlayerCountry extends BaseCountry
     {
         $attackOrNot = rand(0, 1);
         
-        $neighborChose = new BaseCountry();
         
         if ($attackOrNot == 1) { # ESCOLHE SE VAI ATACAR OU NAO
             $numberChose = rand(0, sizeof($this->neighbors) - 1); # escolhe o index pra escolher um inimigo
