@@ -20,6 +20,9 @@ class Main
         // (new Scrapper())->scrap($dom);
 
         $sc = new Scrapper();
-        print_r($sc->getContent($dom));
+        $papers = $sc->getContent($dom);
+        $sheetsController = new SheetsController();
+        
+        $sheetsController->insertPaper($papers);
     }
 }
