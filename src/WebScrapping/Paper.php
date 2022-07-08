@@ -31,6 +31,7 @@ class paper
      * @var array
      */
     private $authors;
+    
 
     public function __construct(int $id, string $title, string $type, array $authors)
     {
