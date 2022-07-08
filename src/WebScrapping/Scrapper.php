@@ -43,7 +43,8 @@ class Scrapper
             $type = ''; # type's id
             
             $classH4 = $classA->item($indexPaper)->getElementsByTagName('h4'); # get the h4
-            $title = $classH4->nodeValue; # get the text of h4
+            
+            $title = $classH4[0]->nodeValue; # get the text of h4
 
             $classDiv = $classA->item($indexPaper)->getElementsByTagName('div'); # array with all classes 'div'
             $indexDiv = 0;
