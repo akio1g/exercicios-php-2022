@@ -13,7 +13,7 @@ class CountryList {
   /**
    * Creates a list of countries, with one human player
    *
-   * @return \Galoa\ExerciciosPhp2022\War\GamePlay\Country\CountryInterface[]
+   * @return \Galoa\ExerciciosPhp2022\War\GamePlay\Country\BaseCountry[]
    *   A list of countries.
    */
   public static function createWorld(): array {

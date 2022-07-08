@@ -2,7 +2,7 @@
 
 namespace Galoa\ExerciciosPhp2022\War\GamePlay;
 
-use Galoa\ExerciciosPhp2022\War\GamePlay\Country\CountryInterface;
+use Galoa\ExerciciosPhp2022\War\GamePlay\Country\BaseCountry;
 
 /**
  * Defines a class that will roll the dice and compute the winners of a battle.
@@ -12,7 +12,7 @@ interface BattlefieldInterface {
   /**
    * Rolls the dice for a country.
    *
-   * @param \Galoa\ExerciciosPhp2022\War\GamePlay\Country\CountryInterface $country
+   * @param \Galoa\ExerciciosPhp2022\War\GamePlay\Country\BaseCountry $country
    *   The country that is rolling the dice.
    * @param bool $isAtacking
    *   TRUE if the dice is being rolled by the attacker, FALSE if by the
@@ -25,18 +25,18 @@ interface BattlefieldInterface {
    *     - the number of troops of the country MINUS ONE, when the attacker is
    *       the one rolling the dice.
    */
-  public function rollDice(CountryInterface $country, bool $isAtacking): array;
+  public function rollDice(BaseCountry $country, bool $isAtacking): array;
 
   /**
    * Computes the winners and losers of a battle.
    *
-   * @param \Galoa\ExerciciosPhp2022\War\GamePlay\Country\CountryInterface $attackingCountry
+   * @param \Galoa\ExerciciosPhp2022\War\GamePlay\Country\BaseCountry $attackingCountry
    *   The country that is attacking.
    * @param int[] $attackingDice
    *   The number
-   * @param \Galoa\ExerciciosPhp2022\War\GamePlay\Country\CountryInterface $defendingCountry
+   * @param \Galoa\ExerciciosPhp2022\War\GamePlay\Country\BaseCountry $defendingCountry
    *   The country that is defending from the attack.
    */
-  public function computeBattle(CountryInterface $attackingCountry, array $attackingDice, CountryInterface $defendingCountry, array $defendingDice): void;
+  public function computeBattle(BaseCountry $attackingCountry, array $attackingDice, BaseCountry $defendingCountry, array $defendingDice): void;
 
 }

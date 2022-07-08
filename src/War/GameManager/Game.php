@@ -22,7 +22,7 @@ class Game
     /**
      * The countries in the game, including conquered ones, indexed by name.
      *
-     * @var \Galoa\ExerciciosPhp2022\War\GamePlay\Country\CountryInterface[]
+     * @var \Galoa\ExerciciosPhp2022\War\GamePlay\Country\BaseCountry[]
      */
     protected $countries;
 
@@ -39,7 +39,7 @@ class Game
      *
      * @param \Galoa\ExerciciosPhp2022\War\GamePlay\BattlefieldInterface $battlefield
      *            The battle field.
-     * @param \Galoa\ExerciciosPhp2022\War\GamePlay\Country\CountryInterface[] $countries
+     * @param \Galoa\ExerciciosPhp2022\War\GamePlay\Country\BaseCountry[] $countries
      *            A list of countries.
      */
     public function __construct(BattlefieldInterface $battlefield, array $countries)
@@ -48,12 +48,13 @@ class Game
         $this->countries = $countries;
     }
 
-    public function startConfig(): void{
-        foreach($this->countries as $x) {
+    public function startConfig(): void
+    {
+        foreach ($this->countries as $x) {
             $x->isConquered();
         }
     }
-    
+
     /**
      * Plays the game.
      */
@@ -108,19 +109,16 @@ class Game
             if ($attackingCountry instanceof ComputerPlayerCountry) {
                 $defendingCountry = $attackingCountry->chooseToAttack();
             } elseif ($attackingCountry instanceof HumanPlayerCountry) {
-                $defendingCountry = $attackingCountry->chooseToAttack(); //teste
-                /*
                 $neighbors = $attackingCountry->getNeighbors();
                 $defendingCountryName = NULL;
                 do {
-                    $typedName = readline("Digite o nome de um país para atacar ou deixe em branco para não atacar ninguém:\n");
+                    $typedName = readline("Digite o nome de um paï¿½s para atacar ou deixe em branco para nï¿½o atacar ninguï¿½m:\n");
                     $defendingCountryName = trim($typedName);
                 } while ($defendingCountryName && ! isset($neighbors[$defendingCountryName]));
 
                 if ($defendingCountryName) {
                     $defendingCountry = $this->countries[$defendingCountryName];
                 }
-                */
             }
 
             // If there is an attack, let's do battle.
@@ -165,7 +163,7 @@ class Game
     /**
      * Lists countries that have not been conquered.
      *
-     * @return \Galoa\ExerciciosPhp2022\War\GamePlay\Country\CountryInterface[] An array of countries.
+     * @return \Galoa\ExerciciosPhp2022\War\GamePlay\Country\BaseCountry[] An array of countries.
      */
     protected function getUnconqueredCountries(): array
     {

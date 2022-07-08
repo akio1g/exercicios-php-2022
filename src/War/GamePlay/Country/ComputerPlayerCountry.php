@@ -15,17 +15,17 @@ class ComputerPlayerCountry extends BaseCountry
      *
      * It must NOT be a conquered country.
      *
-     * @return \Galoa\ExerciciosPhp2022\War\GamePlay\Country\CountryInterface|null The country that will be attacked, NULL if none will be.
+     * @return \Galoa\ExerciciosPhp2022\War\GamePlay\Country\BaseCountry|null The country that will be attacked, NULL if none will be.
      */
-    public function chooseToAttack(): ?CountryInterface
+    public function chooseToAttack(): ?BaseCountry
     {
         $attackOrNot = rand(0, 1);
         
         
-        if ($attackOrNot == 1) { # ESCOLHE SE VAI ATACAR OU NAO
-            $numberChose = rand(0, sizeof($this->neighbors) - 1); # escolhe o index pra escolher um inimigo
+        if ($attackOrNot == 1) { # choose if will attack or not
+            $numberChose = rand(0, sizeof($this->neighbors) - 1); # choose the index in the array neighbors
             $neighborChose = $this->neighbors[$numberChose];
-            if ($neighborChose->isConquered()) { # # CALL TO A MEMEBER FUNCTION ON NULL
+            if ($neighborChose->isConquered()) { # if the country chose is conquered, choose the country who conquered the country chose
                 return $neighborChose->getConquered();
             } else {
                 return $neighborChose;

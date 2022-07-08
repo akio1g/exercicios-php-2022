@@ -6,21 +6,36 @@ namespace Galoa\ExerciciosPhp2022\War\GamePlay\Country;
  */
 class BaseCountry implements CountryInterface
 {
+
     /**
      * The name of the country.
      *
      * @var string
      */
-    protected  $name;
+    protected $name;
 
-    protected  array $neighbors = [];
+    /**
+     * Array of neighbors of the country.
+     *
+     * @var array
+     */
+    protected array $neighbors = [];
 
+    /**
+     * Number of Troops of the country.
+     * 
+     * @var integer
+     */
     protected int $numberOfTroops = 3;
 
-    protected  array $conqueredCountries = [];
+    /**
+     * Country who conquered this country.
+     * 
+     * @var BaseCountry
+     */
+    protected BaseCountry $conquered;
 
-    protected CountryInterface $conquered;
-
+    
     public function __construct(string $name)
     {
         $this->name = $name;
@@ -35,8 +50,9 @@ class BaseCountry implements CountryInterface
     {
         return $this->numberOfTroops;
     }
-    
-    public function setNumberofTroops(int $troops): void {
+
+    public function setNumberofTroops(int $troops): void
+    {
         $this->numberOfTroops += $troops;
     }
 
@@ -50,7 +66,7 @@ class BaseCountry implements CountryInterface
         $this->neighbors = $neighbors;
     }
 
-    public function getConquered(): CountryInterface
+    public function getConquered(): BaseCountry
     {
         return $this->conquered;
     }
@@ -65,19 +81,19 @@ class BaseCountry implements CountryInterface
         $this->numberOfTroops -= $killedTroops;
     }
 
-    public function conquer(CountryInterface $conqueredCountry): void
+    public function conquer(BaseCountry $conqueredCountry): void
     {
-        $neighborsConquered = $conqueredCountry->getNeighbors();
-        $neighborsConquered = array_merge($this->neighbors, $neighborsConquered); # junta os vizinhos da sua cidade e do inimigo conquistado
-        $neighborsConquered = array_unique($neighborsConquered,SORT_REGULAR); # remove duplicadas
-        
-        foreach ($neighborsConquered as $neighbor) { 
-            if ($neighbor->getName() == $this->name || $conqueredCountry->getName()) {
+        $neighborsConquered = $conqueredCountry->getNeighbors(); // get the neighbors of the conquered country
+        $neighborsConquered = array_merge($this->neighbors, $neighborsConquered); // merge both arrays of the neighbors
+        $neighborsConquered = array_unique($neighborsConquered, SORT_REGULAR); // remove the duplicates
+
+        foreach ($neighborsConquered as $neighbor) {
+            if ($neighbor->getName() == $this->name) { // remove the country that conquer from the array neighbors
                 unset($neighbor);
-            }  
+                break;
+            }
         }
-        
-        
+
         $this->setNeighbors($neighborsConquered);
     }
 
